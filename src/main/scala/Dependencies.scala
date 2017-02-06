@@ -3,21 +3,24 @@ import scala.reflect.io.{Directory, File}
 
 object Dependencies {
 
-  def makeLegacyGreatAgain(projectPath: String) = {
-    //    val temp = Directory.makeTemp(prefix = "dpndncy")
-    val temp = Directory.Current.get
-    println(temp)
-    val command = Seq("javac", "*.java", "-g:vars", "-parameters", "-d", temp.path)
-    val file = File(projectPath).jfile
-    //    Process(command, file).!
+  def createFromJavaFiles(path: String): Unit = {
+    val temp = Directory.makeTemp(prefix = "dpndncy")
+    val command = Seq("javac", "*.java", "-g:vars", "-d", temp.path)
+    val dir = File(path).jfile
+    Process(command, dir).!
+    createFromClassFiles(temp.path)
+    temp.deleteRecursively
+  }
 
-    //    temp.deepFiles.filter(_.name.endsWith(".class"))
-    //      .map(DParser.classFileToDClass).foreach(println)
-
-    //   temp.deleteRecursively
+  def createFromClassFiles(path: String): Unit = {
+    Directory(path).deepFiles
+      .filter(_.name.endsWith(".class"))
+      .map(Parser.classFileToDClass)
+      .foreach(println)
   }
 
   def main(args: Array[String]): Unit = {
-    Dependencies.makeLegacyGreatAgain("d:/work/idea/java/src/")
+//    Dependencies.createFromJavaFiles("d:/path/to/project/src/")
+//    Dependencies.createFromClassFiles("d:/path/to/project/out/")
   }
 }

@@ -2,20 +2,20 @@ object members {
 
   trait Printable {
     override def toString: String = this match {
-      case DClass(n, sn, infs, flds, mthds) =>
-        s"Class: $n" + (if(sn != "java/lang/Object") s" extends $sn" else "") +
-          (if (!infs.isEmpty) s" implements ${infs.mkString(", ")}" else "") +
-          (if (!flds.isEmpty)  s"\nFields: ${flds.mkString("\n")}" else "") +
-          (if (!mthds.isEmpty) s"\nMethods: ${mthds.mkString("\n")}" else "")
+      case DClass(n, sn, infs, flds, mtds) => s"Class: $n" +
+        (if (sn != "java/lang/Object") s" extends $sn" else "") +
+        (if (infs.nonEmpty) s" implements ${infs.mkString(", ")}" else "") +
+        (if (flds.nonEmpty) s"\nFields: \n${flds.mkString("\n")}" else "") +
+        (if (mtds.nonEmpty) s"\nMethods: \n${mtds.mkString("\n")}" else "") +
+        "\n" + "#" * 21
 
-      case DField(owner, name, desc) => s"$owner.$name $desc"
+      case DField(owner, name, desc) => s"$owner.$name: $desc"
 
-      case DMethod(owner, name, desc, refs) => s"$owner.$name $desc" +
-        (if (!refs.isEmpty) "\n   " + refs.mkString("\n   ") else "")
+      case DMethod(owner, name, desc, refs) => s"$name $desc" +
+        (if (refs.nonEmpty) refs.mkString("\n   ", "\n   ", "") else "")
 
       case DRef(flag, reference) => s"$flag $reference"
 
-      case wildcard => wildcard.toString
     }
   }
 
