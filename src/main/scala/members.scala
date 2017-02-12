@@ -1,6 +1,6 @@
 object members {
 
-  trait Printable {
+  sealed trait Printable {
     override def toString: String = this match {
       case DClass(n, sn, infs, flds, mtds) => s"Class: $n" +
         (if (sn != "java/lang/Object") s" extends $sn" else "") +

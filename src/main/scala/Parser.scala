@@ -1,13 +1,11 @@
+import members._
 import org.objectweb.asm._
 import org.objectweb.asm.tree._
 import org.objectweb.asm.Opcodes._
-
-import scala.reflect.io.File
 import scala.collection.JavaConverters._
+import scala.reflect.io.File
 
 object Parser {
-
-  import members._
 
   def classFileToDClass(file: File): DClass = {
     val reader = new ClassReader(file.toByteArray)

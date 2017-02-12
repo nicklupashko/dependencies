@@ -17,5 +17,6 @@ resolvers += Resolver.mavenLocal
 libraryDependencies ++= Seq(
   "org.ow2.asm"    % "asm-all"       % "5.0.3",
   "org.scala-lang" % "scala-reflect" % "2.12.1",
-  "org.scala-lang" % "scala-library" % "2.12.1"
+  "org.scala-lang" % "scala-library" % "2.12.1",
+  "org.scalafx"    % "scalafx_2.11"  % "8.0.102-R11"
 )
