@@ -33,30 +33,30 @@ object Parser {
   }
 
   private def methodNodeToDMethod(owner: String, node: MethodNode): DMethod = {
-    val refs = scala.collection.mutable.Set.empty[DRef]
+    val refs = scala.collection.mutable.LinkedHashSet.empty[DRef]
     node.instructions.toArray.foreach(ain => ain.getOpcode match {
       case GETSTATIC | PUTSTATIC | GETFIELD | PUTFIELD =>
-        val field = ain.asInstanceOf[FieldInsnNode]
-        if (!field.owner.startsWith("java/"))
-          refs += DRef("F", s"${field.owner}.${field.name}: ${field.desc}")
+        val fld = ain.asInstanceOf[FieldInsnNode]
+        if (!fld.owner.startsWith("java/"))
+          refs += DRef("F", s"${fld.owner}.${fld.name}: ${fld.desc}")
 
       case INVOKEVIRTUAL | INVOKESTATIC =>
-        val method = ain.asInstanceOf[MethodInsnNode]
-        if (!method.owner.startsWith("java/"))
-          refs += DRef("M", s"${method.owner}.${method.name} ${method.desc}")
+        val mtd = ain.asInstanceOf[MethodInsnNode]
+        if (!mtd.owner.startsWith("java/"))
+          refs += DRef("M", s"${mtd.owner}.${mtd.name} ${mtd.desc}")
 
       case _ => None
     })
 
     val localVars =
       Option(node.localVariables.asInstanceOf[AL[LocalVariableNode]]) match {
-        case Some(locals) => locals.asScala
-          .filterNot(lv => lv.name.matches("this") || primitives.contains(lv.desc))
-          .map(lv => DRef("LV", s"${lv.name}: ${lv.desc}"))
+        case Some(vars) => vars.asScala
+          .filterNot(v => v.name.matches("this") || primitives.contains(v.desc))
+          .map(v => DRef("V", s"${v.name}: ${v.desc}"))
         case None => Nil
       }
 
-    DMethod(owner, node.name, node.desc, refs.toList.sortBy(_.flag) ++ localVars)
+    DMethod(owner, node.name, node.desc, refs.toList ++ localVars)
   }
 
 }

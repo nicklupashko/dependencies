@@ -1,6 +1,6 @@
 import members._
 import scala.sys.process._
-import scala.reflect.io.{Directory, File}
+import scala.reflect.io.Directory
 
 object Dependencies {
 
@@ -14,16 +14,15 @@ object Dependencies {
   }
 
   def fromClassFiles(path: String): Unit =
-    dclassList(filesList(path)).foreach(println)
+    dclassList(path).foreach(println)
 
-  def filesList(path: String): List[File] =
+  def dclassList(path: String): List[DClass] =
     Directory(path).deepFiles.toList
-
-  def dclassList(files: List[File]): List[DClass] =
-    files.filter(_.name.endsWith(".class")).map(Parser.classFileToDClass)
+      .filter(_.name.endsWith(".class"))
+      .map(Parser.classFileToDClass)
 
   def main(args: Array[String]): Unit = {
-//    Dependencies.fromJavaFiles("d:/path/to/project/src/")
-//    Dependencies.fromClassFiles("d:/path/to/project/out/")
+    Dependencies.fromJavaFiles("d:/path/to/project/src/")
+    Dependencies.fromClassFiles("d:/path/to/project/out/")
   }
 }

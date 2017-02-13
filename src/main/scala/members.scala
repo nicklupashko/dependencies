@@ -12,7 +12,7 @@ object members {
       case DField(owner, name, desc) => s"$owner.$name: $desc"
 
       case DMethod(owner, name, desc, refs) => s"$name $desc" +
-        (if (refs.nonEmpty) refs.mkString("\n   ", "\n   ", "") else "")
+        (if (refs.nonEmpty) refs.sortBy(_.flag).mkString("\n   ", "\n   ", "") else "")
 
       case DRef(flag, reference) => s"$flag $reference"
 
