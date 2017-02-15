@@ -4,19 +4,19 @@ import scala.reflect.io.Directory
 
 object Dependencies {
 
-  def fromJavaFiles(path: String): Unit = {
+  def fromJavaFiles(srcDirPath: String): List[DClass] = {
     val temp = Directory.makeTemp(prefix = "dpndncy")
     val command = Seq("javac", "*.java", "-g:vars", "-d", temp.path)
-    val dir = Directory(path)
+    val dir = Directory(srcDirPath)
     Process(command, dir.jfile).!
-    fromClassFiles(temp.path)
+    val dcList = dclassListFrom(temp.path)
     temp.deleteRecursively
+    dcList
   }
 
-  def fromClassFiles(path: String): Unit =
-    dclassList(path).foreach(println)
+  def fromClassFiles(classDirPath: String): List[DClass] = dclassListFrom(classDirPath)
 
-  def dclassList(path: String): List[DClass] =
+  private def dclassListFrom(path: String): List[DClass] =
     Directory(path).deepFiles.toList
       .filter(_.name.endsWith(".class"))
       .map(Parser.classFileToDClass)
