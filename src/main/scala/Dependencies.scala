@@ -14,10 +14,11 @@ object Dependencies {
     dcList
   }
 
-  def fromClassFiles(classDirPath: String): List[DClass] = dclassListFrom(classDirPath)
+  def fromClassFiles(classDirPath: String): List[DClass] =
+    dclassListFrom(classDirPath)
 
-  private def dclassListFrom(path: String): List[DClass] =
-    Directory(path).deepFiles.toList
+  private def dclassListFrom(classDirPath: String): List[DClass] =
+    Directory(classDirPath).deepFiles.toList
       .filter(_.name.endsWith(".class"))
       .map(Parser.classFileToDClass)
 

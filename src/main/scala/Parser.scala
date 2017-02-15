@@ -48,15 +48,14 @@ object Parser {
       case _ => None
     })
 
-    val localVars =
-      Option(node.localVariables.asInstanceOf[AL[LocalVariableNode]]) match {
-        case Some(vars) => vars.asScala
-          .filterNot(v => v.name.matches("this") || primitives.contains(v.desc))
-          .map(v => DRef("V", s"${v.name}: ${v.desc}"))
-        case None => Nil
-      }
+    Option(node.localVariables.asInstanceOf[AL[LocalVariableNode]]) match {
+      case Some(vars) => vars.asScala
+        .filterNot(v => v.name.matches("this") || primitives.contains(v.desc.replaceAll("\\[", "")))
+        .foreach(v => refs += DRef("V", s"${v.name}: ${v.desc}"))
+      case None => None
+    }
 
-    DMethod(owner, node.name, node.desc, refs.toList ++ localVars)
+    DMethod(owner, node.name, node.desc, refs.toList)
   }
 
 }
