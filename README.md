@@ -14,8 +14,8 @@ To begin you may use some examples that placed in `Dependencies.main`.
 There you will find two simplest possible ways to use this solution:  
 
 ```
-Dependencies.fromJavaFiles("d:/path/to/project/src/")
-Dependencies.fromClassFiles("d:/path/to/project/out/")
+Dependencies.fromJavaFiles("c:/path/to/project/src/").foreach(println)
+Dependencies.fromClassFiles("c:/path/to/project/out/").foreach(println)
 ```
 
 # What you need to run this project
