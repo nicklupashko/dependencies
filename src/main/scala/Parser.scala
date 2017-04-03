@@ -1,4 +1,4 @@
-import members._
+import member._
 import org.objectweb.asm._
 import org.objectweb.asm.tree._
 import org.objectweb.asm.Opcodes._
@@ -21,9 +21,11 @@ object Parser {
   private def classNodeToDClass(node: ClassNode): DClass = {
     val interfaces: List[String] =
       node.interfaces.asInstanceOf[AL[String]].asScala.toList
+
     val fields: List[DField] =
       node.fields.asInstanceOf[AL[FieldNode]].asScala.toList
         .map(fld => DField(node.name, fld.name, fld.desc))
+
     val methods: List[DMethod] =
       node.methods.asInstanceOf[AL[MethodNode]].asScala.toList
         .filterNot(_.name.matches("<[a-z]+>"))
@@ -34,6 +36,7 @@ object Parser {
 
   private def methodNodeToDMethod(owner: String, node: MethodNode): DMethod = {
     val refs = scala.collection.mutable.LinkedHashSet.empty[DRef]
+
     node.instructions.toArray.foreach(ain => ain.getOpcode match {
       case GETSTATIC | PUTSTATIC | GETFIELD | PUTFIELD =>
         val fld = ain.asInstanceOf[FieldInsnNode]

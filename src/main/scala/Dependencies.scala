@@ -1,4 +1,4 @@
-import members._
+import member._
 import scala.sys.process._
 import scala.reflect.io.Directory
 
