@@ -5,7 +5,10 @@ import scalafx.scene.layout.{VBox}
 import member._;
 
 object Frame extends JFXApp {
-  implicit var list: List[DClass] = List.empty[DClass]
+  private var list: List[DClass] = List.empty[DClass]
+
+  def updateList(newList: List[DClass]): Unit =
+    this.list = newList
 
   stage = new JFXApp.PrimaryStage {
     title = "Dependencies"

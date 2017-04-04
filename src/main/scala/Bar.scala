@@ -23,20 +23,19 @@ object Bar {
   tog.selectedToggle.onChange((_, _, t) => {
     val ext = t.asInstanceOf[javafx.scene.control.RadioButton].getText
     textField.promptText = s"Path to ${ext} files directory"
-    button.disable = false
   })
 
   private val button = new Button {
-    disable = true
     minWidth = 40
     text = "Let's go"
     onAction = _ => {
-      Frame.list =
+      val list =
         tog.selectedToggle.value
           .asInstanceOf[javafx.scene.control.RadioButton].getText match {
           case ".class" => Dependencies.fromClassFiles(textField.text.value)
           case ".java"  => Dependencies.fromJavaFiles(textField.text.value)
         }
+      Frame.updateList(list)
     }
   }
 
@@ -62,8 +61,6 @@ object Bar {
   }
 
   private def region(wid: Double): Region = {
-    new Region {
-      prefWidth = wid
-    }
+    new Region { prefWidth = wid }
   }
 }
