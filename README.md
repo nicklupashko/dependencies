@@ -1,4 +1,4 @@
-# scala-dependencies
+# dependencies
 
 Solution for creating structure representing dependencies between classes, fields and methods in Java programs.
 
