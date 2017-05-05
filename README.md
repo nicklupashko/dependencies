@@ -5,7 +5,6 @@ Solution for creating structure representing dependencies between classes, field
 This README file (and the whole project actually) is work in progress.
 
 Coming soon: 
-- [ ] Full and useful README file
 - [ ] UI (based on ScalaFX) 
 - [ ] More new features
 
