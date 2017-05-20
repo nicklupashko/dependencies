@@ -15,7 +15,7 @@ object Bar {
     font = new Font("Helvetica", 18)
     textFill = Color.web("#e6e6e6")
     padding  = Insets(0, 8, 0, 4)
-    margin   = Insets(0, 0, 4, 0)
+    margin   = Insets(0, 0, 2, 0)
   }
 
   private val textField = new TextField {
