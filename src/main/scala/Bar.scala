@@ -32,10 +32,10 @@ object Bar {
   private def radioButton
   (txt: String, select: Boolean = false): RadioButton = {
     new RadioButton {
-      text     = txt
-      selected = select
-      padding  = Insets(0, 0, 0, 6)
+      text = txt
       toggleGroup = tog
+      selected = select
+      padding = Insets(0, 0, 0, 6)
     }
   }
 
@@ -50,8 +50,8 @@ object Bar {
 
   private val progressBar = new ProgressBar {
     prefWidth = 170
-    padding   = Insets(0, 4, 0, 4)
-    visible   = false
+    padding = Insets(0, 4, 0, 4)
+    visible = false
   }
 
   private val button = new Button {
