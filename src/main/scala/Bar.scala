@@ -65,7 +65,7 @@ object Bar {
         val path: String = textField.text.value
         val extension: String = tog.selectedToggle.value
           .asInstanceOf[javafx.scene.control.RadioButton].getText
-        Frame.updateList(path, extension)
+        Frame.update(path, extension)
       }
 
       future.onComplete {
