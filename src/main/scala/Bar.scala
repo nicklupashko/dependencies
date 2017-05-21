@@ -1,6 +1,6 @@
+import javafx.scene.input.KeyCode
 import scala.concurrent.Future
-import scala.concurrent
-.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext.Implicits.global
 import scalafx.geometry.Insets
 import scalafx.scene.control._
 import scalafx.scene.layout.Region
@@ -21,6 +21,10 @@ object Bar {
   private val textField = new TextField {
     promptText = "Path to files directory"
     minWidth   = 200
+  }
+  textField.onKeyPressed = k => k.getCode match {
+    case KeyCode.ENTER => button.fire
+    case _ => None
   }
 
   private val tog = new ToggleGroup()
