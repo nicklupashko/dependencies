@@ -1,4 +1,4 @@
-import scalafx.application.JFXApp
+import scalafx.application.{JFXApp, Platform}
 import scalafx.scene._
 import scalafx.stage.StageStyle
 import scalafx.scene.layout.BorderPane
@@ -7,19 +7,19 @@ import member._
 
 object Frame extends JFXApp {
 
-  private var tree = new TreeView[String](new TreeItem[String](""))
+  private val tree = new TreeView[String](new TreeItem[String](""))
 
   def update(path: String, extension: String): Unit = {
     val list = extension match {
       case ".class" => Dependencies.fromClassFiles(path)
       case ".java"  => Dependencies.fromJavaFiles(path)
     }
-    updateTreeView(list)
+    val name = path.replaceAll(".+/(.+)", "$1")
+    Platform.runLater(updateTreeView(name, list))
   }
 
-  def updateTreeView(list: List[DClass]): Unit = {
-    val root = new TreeItem[String]("Project")
-
+  def updateTreeView(name: String, list: List[DClass]): Unit = {
+    val root = new TreeItem[String](name)
     root.children = list.map(n => {
       val item = new TreeItem[String](n.name)
       item.children =
@@ -28,8 +28,7 @@ object Frame extends JFXApp {
       item
     })
 
-    root.expanded = false
-    tree.root.value = root
+    tree.root = root
   }
 
   stage = new JFXApp.PrimaryStage {
