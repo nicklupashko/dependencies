@@ -1,4 +1,4 @@
-object members {
+object member {
 
   sealed trait Printable {
     override def toString: String = this match {

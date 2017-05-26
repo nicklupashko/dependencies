@@ -1,4 +1,4 @@
-import members._
+import member._
 import scala.sys.process._
 import scala.reflect.io.Directory
 
@@ -13,16 +13,13 @@ object Dependencies {
     dcList
   }
 
-  def fromClassFiles(classPath: String): List[DClass] =
+  def fromClassFiles(classPath: String): List[DClass] = {
     dclassListFrom(classPath)
+  }
 
-  private def dclassListFrom(classPath: String): List[DClass] =
+  private def dclassListFrom(classPath: String): List[DClass] = {
     Directory(classPath).deepFiles.toList
       .filter(_.name.endsWith(".class"))
       .map(Parser.classFileToDClass)
-
-  def main(args: Array[String]): Unit = {
-    Dependencies.fromJavaFiles("c:/path/to/project/src/").foreach(println)
-    Dependencies.fromClassFiles("c:/path/to/project/out/").foreach(println)
   }
 }
