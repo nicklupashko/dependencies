@@ -14,7 +14,7 @@ object Bar {
     text = "Dependencies"
     font = new Font("Helvetica", 18)
     textFill = Color.web("#e6e6e6")
-    padding  = Insets(0, 8, 0, 4)
+    padding  = Insets(0, 7, 0, 4)
     margin   = Insets(0, 0, 2, 0)
   }
 
@@ -86,13 +86,14 @@ object Bar {
     prefHeight = 30
     content = List(
       label,
+      region(120),
       textField,
       radioButton(".class", true),
       radioButton(".java"),
-      region(200),
+      region(80),
       processingLabel,
       progressBar,
-      region(8),
+      region(6),
       button
     )
   }
