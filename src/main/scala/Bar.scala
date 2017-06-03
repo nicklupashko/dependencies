@@ -30,7 +30,7 @@ object Bar {
   private val tog = new ToggleGroup()
   tog.selectedToggle.onChange((_, _, t) => {
     val ext = t.asInstanceOf[javafx.scene.control.RadioButton].getText
-    textField.promptText = s"Path to ${ext} files directory"
+    textField.promptText = s"Path to $ext files directory"
   })
 
   private def radioButton
@@ -72,7 +72,7 @@ object Bar {
         Frame.update(path, extension)
       }
 
-      future.onComplete {
+      future onComplete {
         case _ =>
           progressBar.visible     = false
           processingLabel.visible = false
