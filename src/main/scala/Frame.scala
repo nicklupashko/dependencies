@@ -1,6 +1,5 @@
 import scalafx.application.{JFXApp, Platform}
 import scalafx.scene._
-import scalafx.Includes._
 import scalafx.stage.StageStyle
 import scalafx.scene.layout.BorderPane
 import scalafx.scene.control.{TreeItem, TreeView}
@@ -24,26 +23,21 @@ object Frame extends JFXApp {
   }
 
   def updateTreeView(name: String, list: List[DClass]): Unit = {
-    val root = new TreeItem[String](name)
-
-    root.children = list.map(node => {
-      val classItem = new TreeItem[String](node.name.replaceAll(".+/(.+)", "$1"))
-
-      val fieldItems = new TreeItem[String]("Fields:")
-      fieldItems.children = node.fields.map(fld => {
-        new TreeItem[String](s"${fld.name}: ${fld.desc.replaceAll(".+/(.+);", "$1")}")
+    tree.root = new TreeItem[String] {
+      value = name
+      children = list.map(node => {
+        new TreeItem[String] {
+          value = node.name.replaceFirst(".+/(.+)", "$1").replaceAll("\\$", ".")
+          children = node.methods.map(mtd => {
+            val params = mtd.desc.replaceFirst("\\((.+)?\\).+", "$1").split(";")
+              .map(_.replaceFirst("(\\[*)?.+/(.+)", "$2$1")).mkString(", ")
+            val retType = mtd.desc.replaceFirst(".+\\)(\\[*)?(.+/)?(.+)", "$3$1")
+            new TreeItem[String](s"${mtd.name}($params): $retType"
+              .replaceAll("\\$", ".").replaceAll(";", "").replaceAll("\\[", "[]"))
+          })
+        }
       })
-
-      val methodItems = new TreeItem[String]("Methods:")
-      methodItems.children = node.methods.map(mtd => {
-        new TreeItem[String](s"${mtd.name}")
-      })
-
-      classItem.children = List(fieldItems, methodItems)
-      classItem
-    })
-
-    tree.root = root
+    }
   }
 
   stage = new JFXApp.PrimaryStage {
@@ -53,9 +47,6 @@ object Frame extends JFXApp {
     height = 680
     resizable = false
     scene = new Scene {
-      stylesheets = List(
-        getClass.getResource("style.css")
-          .toExternalForm)
       root = new BorderPane {
         top = Bar.get
         left = tree
