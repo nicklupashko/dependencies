@@ -47,7 +47,7 @@ object Frame extends JFXApp {
     }
   }
 
-  def findAllOfIt(methodName: String): List[String] = {
+  def findAllOfIt(name: String): List[String] = {
     var i = 0
     val allMethods = classList.flatMap(_.methods)
 
@@ -55,24 +55,24 @@ object Frame extends JFXApp {
       allMethods.find(m => (m.name + m.desc) == methodName)
 
     def isMethodExists(methodName: String): Boolean =
-      allMethods.exists(m => (m.name + m.desc) == methodName)
+      findMethod(methodName).nonEmpty
 
-    findMethod(methodName) match {
-      case None => List.empty[String]
-      case Some(m) =>
-        val fields: List[String] = m.refs.filter(_.flag == "F")
-          .map(f => s"$methodName^${f.flag} ${f.reference}")
-        val vars: List[String] = m.refs.filter(_.flag == "V")
-          .map(v => s"${v.flag} ${v.reference}")
-          .map(_.replaceAll("(.+):", "$1(" + {i = i + 1; i} + "):"))
-          .map(v => s"$methodName^$v")
-        val methods: List[String] = m.refs.filter(_.flag == "M")
-          .filter(m => isMethodExists(m.reference))
-          .map(m => s"$methodName^${m.reference}")
+    def methodX(methodName: String): List[String] =
+      findMethod(methodName) match {
+        case None => List.empty[String]
+        case Some(m) =>
+          val fields: List[String] = m.refs.filter(_.flag == "F")
+            .map(f => s"$methodName^${f.flag} ${f.reference}")
+          val vars: List[String] = m.refs.filter(_.flag == "V")
+            .map(v => s"$methodName^${v.flag} (${i=i+1; i}) ${v.reference}")
+          val methods: List[String] = m.refs.filter(_.flag == "M")
+            .filter(m => isMethodExists(m.reference))
+            .map(m => s"$methodName^${m.reference}")
 
-        fields ++ vars ++ methods ++
-          m.refs.filter(_.flag == "M").map(_.reference).flatMap(findAllOfIt)
-    }
+          fields ++ vars ++ methods ++
+            m.refs.filter(_.flag == "M").map(_.reference).flatMap(methodX)
+      }
+    methodX(name)
   }
 
   def update(path: String, extension: String): Unit = {
