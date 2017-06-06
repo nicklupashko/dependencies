@@ -21,6 +21,7 @@ object Frame extends JFXApp {
 
   private val graph = new SwingNode {
     translateX = 64
+    translateY = 8
   }
 
   private val tree = new TreeView[String] {
