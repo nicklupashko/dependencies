@@ -15,10 +15,10 @@ resolvers ++= Seq(
 resolvers += Resolver.mavenLocal
 
 libraryDependencies ++= Seq(
+  "org.ow2.asm"    %  "asm-all"            % "5.0.3",
   "net.sf.jung"    %  "jung-graph-impl"    % "2.1.1",
   "net.sf.jung"    %  "jung-algorithms"    % "2.1.1",
   "net.sf.jung"    %  "jung-visualization" % "2.1.1",
-  "org.ow2.asm"    %  "asm-all"            % "5.0.3",
   "org.scala-lang" %  "scala-reflect"      % "2.12.1",
   "org.scala-lang" %  "scala-library"      % "2.12.1",
   "org.scalafx"    %% "scalafx"            % "8.0.102-R11"
