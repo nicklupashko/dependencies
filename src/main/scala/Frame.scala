@@ -91,7 +91,6 @@ object Frame extends JFXApp {
     val swing = Graph343.node(list.asJava)
     swing.requestFocus()
     graph.content = swing
-
   }
 
   def updateTreeView(name: String, list: List[DClass]): Unit = {
@@ -118,7 +117,7 @@ object Frame extends JFXApp {
         top = bar
         left = tree
         center = graph
-        style = "-fx-background-color: #eeeeee"
+        style = "-fx-background-color: #eee"
       }
     }
   }
