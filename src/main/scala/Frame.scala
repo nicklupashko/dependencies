@@ -88,7 +88,10 @@ object Frame extends JFXApp {
 
   def updateGraph(list: List[String]): Unit = {
     import scala.collection.JavaConverters._
-    graph.content = Graph343.node(list.asJava)
+    val swing = Graph343.node(list.asJava)
+    swing.requestFocus()
+    graph.content = swing
+
   }
 
   def updateTreeView(name: String, list: List[DClass]): Unit = {
