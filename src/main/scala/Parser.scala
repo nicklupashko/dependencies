@@ -15,16 +15,20 @@ object Parser {
   }
 
   private def classNodeToDClass(node: ClassNode): DClass = {
-    val interfaces: List[String] = node.interfaces.toScalaList[String]
+    val name = node.name.simplifyPath
+
+    val superName = node.superName.simplifyPath
+
+    val interfaces: List[String] =
+      node.interfaces.toScalaList[String].map(_.simplifyPath)
 
     val fields: List[DField] = node.fields.toScalaList[FieldNode]
-      .map(fld => DField(node.name, fld.name, fld.desc))
+      .map(fld => DField(name, fld.name, fld.desc))
 
     val methods: List[DMethod] = node.methods.toScalaList[MethodNode]
-      .filterNot(_.name.matches("<[a-z]+>"))
-      .map(mtd => methodNodeToDMethod(node.name, mtd))
+      .map(mtd => methodNodeToDMethod(name, mtd))
 
-    DClass(node.name, node.superName, interfaces, fields, methods)
+    DClass(name, superName, interfaces, fields, methods)
   }
 
   private def methodNodeToDMethod(owner: String, node: MethodNode): DMethod = {
@@ -33,29 +37,54 @@ object Parser {
     node.instructions.toArray.foreach(ain => ain.getOpcode match {
       case GETSTATIC | PUTSTATIC | GETFIELD | PUTFIELD =>
         val fld = ain.asInstanceOf[FieldInsnNode]
-        if (!fld.owner.startsWith("java/"))
-          refs += DRef("F", s"${fld.owner}.${fld.name}: ${fld.desc}")
+        if (!fld.owner.startsWith("java/")) {
+          val fldOwner = fld.owner.simplifyPath
+          val fldDesc = fld.desc.removeL.swapBracketsAndDesc
+            .simplifyPath.removeSemicolons.doubleBrackets
+          refs += DRef("F", s"$fldOwner.${fld.name}: $fldDesc")
+        }
 
       case INVOKEVIRTUAL | INVOKESTATIC =>
         val mtd = ain.asInstanceOf[MethodInsnNode]
-        if (!mtd.owner.startsWith("java/"))
-          refs += DRef("M", s"${mtd.owner}.${mtd.name} ${mtd.desc}")
+        if (!mtd.owner.startsWith("java/")) {
+          val mtdOwner = mtd.owner.simplifyPath
+          val mtdParams = mtd.desc.parametersX
+          val mtdRetType = mtd.desc.returnTypeX
+          val methodX = s"${mtd.name}($mtdParams): $mtdRetType"
+            .removeSemicolons.doubleBrackets
+          refs += DRef("M", s"$mtdOwner.$methodX")
+        }
 
       case _ => None
     })
 
     Option(node.localVariables.toArrayList[LocalVariableNode]).map(_.asScala
       .filterNot(v => v.name.matches("this") || primitives.contains(v.desc.replaceAll("\\[", "")))
-      .foreach(v => refs += DRef("V", s"${v.name}: ${v.desc}")))
+      .foreach(v => refs += DRef("V", s"${v.name}: ${v.desc.removeL
+        .simplifyPath.removeSemicolons.doubleBrackets.swapBracketsAndDesc2}")))
 
-    DMethod(owner, node.name, node.desc, refs.toList)
+    DMethod(owner, s"$owner.${node.name}(${node.desc.parametersX})".removeSemicolons.doubleBrackets,
+      s": ${node.desc.returnTypeX}".removeSemicolons.doubleBrackets, refs.toList)
   }
 
   private val primitives: Set[String] = Set("B", "C", "D", "F", "J", "I", "S", "Z")
 
-  private implicit class List2ArrayList[T](list: java.util.List[T]) {
+  private implicit class list2arrayList[T](list: java.util.List[T]) {
     def toArrayList[A] = list.asInstanceOf[java.util.ArrayList[A]]
     def toScalaList[A] = list.toArrayList[A].asScala.toList
+  }
+
+  private implicit class string2newView(str: String) {
+    def removeL = str.replaceFirst("L", "")
+    def simplifyPath = str.replaceFirst(".+/(.+)", "$1")
+    def doubleBrackets = str.replaceAll("\\[", "[]")
+    def removeSemicolons = str.replaceAll(";", "")
+    def swapBracketsAndDesc = str.replaceAll("(\\[*)?(.+)", "$2$1")
+    def swapBracketsAndDesc2 = str.replaceFirst("(\\[*)?.+/(.+)", "$2$1")
+
+    def parametersX = str.replaceFirst("\\((.+)?\\).+", "$1").split(";")
+      .map(_.swapBracketsAndDesc2).mkString(", ")
+    def returnTypeX = str.replaceFirst(".+\\)(\\[*)?(.+/)?(.+)", "$3$1")
   }
 
 }
