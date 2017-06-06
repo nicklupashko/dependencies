@@ -8,7 +8,6 @@ import scalafx.scene.paint.Color
 import scalafx.scene.text.Font
 
 object Bar {
-  def get: ToolBar = toolBar
 
   private val label = new Label {
     text = "Dependencies"
@@ -43,7 +42,7 @@ object Bar {
     }
   }
 
-  private val processingLabel = new Label {
+  val processingLabel = new Label {
     text = "Processing"
     font = new Font("Helvetica", 12)
     textFill = Color.web("#2BB2DD")
@@ -52,7 +51,7 @@ object Bar {
     visible  = false
   }
 
-  private val progressBar = new ProgressBar {
+  val progressBar = new ProgressBar {
     prefWidth = 170
     padding = Insets(0, 4, 0, 4)
     visible = false
@@ -80,7 +79,7 @@ object Bar {
     }
   }
 
-  private val toolBar = new ToolBar {
+  val toolBar = new ToolBar {
     focusTraversable = true
     style = "-fx-base: #333333"
     prefHeight = 30
