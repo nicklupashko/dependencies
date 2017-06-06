@@ -114,6 +114,7 @@ object Frame extends JFXApp {
         top = bar
         left = tree
         center = graph
+        style = "-fx-background-color: #eeeeee"
       }
     }
   }
