@@ -7,10 +7,8 @@ import edu.uci.ics.jung.visualization.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
@@ -19,7 +17,7 @@ import javax.swing.*;
 
 public class Graph343 {
 
-    public static JComponent node(java.util.List<String> list) {
+    public static JComponent node(List<String> list) {
         Graph graph = new DirectedSparseGraph<>();
 
         String mainNode = list.get(0).replaceAll("\\^.+", "");
@@ -43,9 +41,9 @@ public class Graph343 {
         visualizationViewer.setVertexToolTipTransformer(new ToStringLabeller());
         visualizationViewer.getRenderContext().setVertexFillPaintTransformer(v -> {
             String str = v.toString();
+            if (str.equals(mainNode)) return Color.BLUE;
             if (str.startsWith("F ")) return Color.GREEN;
             if (str.startsWith("V ")) return Color.YELLOW;
-            if (str.equals(mainNode)) return Color.MAGENTA;
             return Color.RED;
         });
 
