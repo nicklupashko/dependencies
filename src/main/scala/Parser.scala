@@ -61,9 +61,9 @@ object Parser {
     Option(node.localVariables.toArrayList[LocalVariableNode]).map(_.asScala
       .filterNot(v => v.name.matches("this") || primitives.contains(v.desc.replaceAll("\\[", "")))
       .foreach(v => refs += DRef("V", s"${v.name}: ${v.desc.removeL
-        .simplifyPath.removeSemicolons.doubleBrackets.swapBracketsAndDesc2}")))
+        .swapBracketsAndDesc.simplifyPath.removeSemicolons.doubleBrackets}")))
 
-    DMethod(owner, s"$owner.${node.name}(${node.desc.parametersX})".removeSemicolons.doubleBrackets,
+    DMethod(owner, s"$owner.${node.name}(${node.desc.parametersX})".doubleBrackets,
       s": ${node.desc.returnTypeX}".removeSemicolons.doubleBrackets, refs.toList)
   }
 
@@ -80,10 +80,9 @@ object Parser {
     def doubleBrackets = str.replaceAll("\\[", "[]")
     def removeSemicolons = str.replaceAll(";", "")
     def swapBracketsAndDesc = str.replaceAll("(\\[*)?(.+)", "$2$1")
-    def swapBracketsAndDesc2 = str.replaceFirst("(\\[*)?.+/(.+)", "$2$1")
 
     def parametersX = str.replaceFirst("\\((.+)?\\).+", "$1").split(";")
-      .map(_.swapBracketsAndDesc2).mkString(", ")
+      .map(_.removeL.swapBracketsAndDesc.simplifyPath).mkString(", ")
     def returnTypeX = str.replaceFirst(".+\\)(\\[*)?(.+/)?(.+)", "$3$1")
   }
 
