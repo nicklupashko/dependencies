@@ -19,7 +19,9 @@ object Frame extends JFXApp {
 
   private val bar = Bar.toolBar
 
-  private val graph = new SwingNode
+  private val graph = new SwingNode {
+    translateX = 64
+  }
 
   private val tree = new TreeView[String] {
     focusTraversable = false
