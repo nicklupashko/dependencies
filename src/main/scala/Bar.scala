@@ -85,11 +85,11 @@ object Bar {
     prefHeight = 30
     content = List(
       label,
-      region(120),
+      region(112),
       textField,
       radioButton(".class", true),
       radioButton(".java"),
-      region(80),
+      region(72),
       processingLabel,
       progressBar,
       region(6),
