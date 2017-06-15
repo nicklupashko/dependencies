@@ -11,9 +11,9 @@ object Bar {
 
   private val label = new Label {
     text = "Dependencies"
-    font = new Font("Helvetica", 18)
+    font = new Font("Calibri", 19)
     textFill = Color.web("#e6e6e6")
-    padding  = Insets(0, 7, 0, 4)
+    padding  = Insets(0, 8, 0, 4)
     margin   = Insets(0, 0, 2, 0)
   }
 
@@ -44,7 +44,7 @@ object Bar {
 
   val processingLabel = new Label {
     text = "Processing"
-    font = new Font("Helvetica", 12)
+    font = new Font("Calibri", 14)
     textFill = Color.web("#2BB2DD")
     padding  = Insets(0, 8, 0, 8)
     margin   = Insets(0, 0, 2, 0)
