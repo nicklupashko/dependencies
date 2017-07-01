@@ -11,7 +11,7 @@ From now on, we also have UI (based on ScalaFX) which can make the use of the ap
 ![screenshot2](screenshot2.png?raw=true "Graph")
 
 # Getting started
-You just need to run Frame object.
+Run Frame object.
 
-# What you need to run this project
-SBT, Scala, Java (of course) and (most important) the desire to find all the dependencies in your Java project!
+Also you should have:
+Java, Scala, SBT and (most important) the desire to find all the dependencies in your Java project!
