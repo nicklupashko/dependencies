@@ -108,7 +108,6 @@ object Frame extends JFXApp {
 
   stage = new JFXApp.PrimaryStage {
     title = "Dependencies"
-    initStyle(StageStyle.Unified)
     width = 980
     height = 680
     resizable = false
