@@ -2,20 +2,16 @@
 
 Solution for creating structure representing dependencies between classes, fields and methods in Java programs.
 
-This README file (and the whole project actually) is work in progress.
+From now on, we also have UI (based on ScalaFX) which can make the use of the application more revealing and understandable.
 
-Coming soon: 
-- [ ] UI (based on ScalaFX) 
-- [ ] More new features
+**Entry point view + getting a list of classes with their methods lists**
+![screenshot1](screenshot1.png?raw=true "Start")
+
+**Selecting a method and building a dependency graph for it**
+![screenshot2](screenshot2.png?raw=true "Graph")
 
 # Getting started
-To begin you may use some examples that placed in `Dependencies.main`. 
-There you will find two simplest possible ways to use this solution:  
+Run Frame object.
 
-```
-Dependencies.fromJavaFiles("c:/path/to/project/src/").foreach(println)
-Dependencies.fromClassFiles("c:/path/to/project/out/").foreach(println)
-```
-
-# What you need to run this project
-SBT, Scala, Java (of course) and (most important) the desire to find all the dependencies in your Java project!
+Also you should have:
+Java, Scala, SBT and (most important) the desire to find all the dependencies in your Java project!
