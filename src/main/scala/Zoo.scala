@@ -10,7 +10,7 @@ import scalafx.scene.text.Font
 
 object Zoo extends JFXApp {
 
-  val fontSize = 100
+  val fontSize = 120
 
   val initialFont = "Georgia"
   val secondFont  = "Palatino"
