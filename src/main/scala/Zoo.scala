@@ -12,7 +12,7 @@ object Zoo extends JFXApp {
 
   val fontSize = 120
 
-  val initialFont = "Georgia"
+  val initialFont = "New York"
   val secondFont  = "Palatino"
 
   def label(text: String, color: String = "#001"): Label = {
